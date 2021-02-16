@@ -1,5 +1,66 @@
-add = { "+" }
-sub = { "-" }
+left_paren     = { "(" }
+right_paren    = { ")" }
+left_brace     = { "{" }
+right_brace    = { "}" }
+left_bracket   = { "[" }
+right_bracket  = { "]" }
+comma          = { "," }
+eql            = { "=" }
+colon          = { ":" }
+semicolon      = { ";" }
+blank          = { "_" }
+times          = { "x" }
+
+sub            = { "-" }
+add            = { "+" }
+mul            = { "*" }
+modulo         = { "%" }
+div            = { "/" }
+eqlc           = { "==" }
+neq            = { "!=" }
+lte            = { "<=" }
+lss            = { "<" }
+gte            = { ">=" }
+gtr            = { ">" }
+eql_regex      = { "=~" }
+neq_regex      = { "!~" }
+pow            = { "^" }
+
+
+// Operators.
+and            = { "and" }
+or             = { "or" }
+unless         = { "unless" }
+
+// Aggregators.
+sum            = { "sum" }
+avg            = { "avg" }
+count          = { "count" }
+min            = { "min" }
+max            = { "max" }
+group          = { "group" }
+stddev         = { "stddev" }
+stdvar         = { "stdvar" }
+topk           = { "topk" }
+bottomk        = { "bottomk" }
+count_values   = { "count_values" }
+quantile       = { "quantile" }
+
+// Keywords.
+offset         = { "offset" }
+by             = { "by" }
+without        = { "without" }
+on             = { "on" }
+ignoring       = { "ignoring" }
+group_left     = { "group_left" }
+group_right    = { "group_right" }
+boolen         = { "bool" }
+
+// Preprocessors.
+start          = { "start" }
+end            = { "end" }
+
+// Literals
 
 number = @{
 	("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
@@ -7,9 +68,13 @@ number = @{
 	~ (^"e" ~ (add | sub)? ~ ASCII_DIGIT+)?
 }
 
-uint = { ASCII_DIGIT ~ (ASCII_DIGIT | "_")* }
+signed_number = { (add | sub) ~ number }
+signed_or_unsigned_number = { (add | sub)? ~ number }
 
-digits = { ASCII_DIGIT+ }
+inf = { "inf" }
+nan = { "nan" }
+
+uint = { ASCII_DIGIT+ }
 
 string_literal = ${"\"" ~ (char_raw | char_escaped)* ~ "\""}
 char_raw = { !("\\" | "\"") ~ ANY }
@@ -21,7 +86,8 @@ char_predefined_inner = { "n" | "r" | "t" | "\\" | "0" | "\"" | "'" }
 
 
 duration_unit = { "ns" | "us" | "ms" | "s" | "m" | "h" | "d" | "w" | "y" }
-duration_part = ${ digits ~ duration_unit }
-duration = ${ duration_part+ | digits }
+duration_part = ${ uint ~ duration_unit }
+duration = ${ duration_part+ | uint }
 
+// Main
 input = {SOI ~ EOI}

@@ -35,7 +35,7 @@ fn duration(pair: Pair) -> Result<Duration> {
             Rule::duration_part => {
                 res += duration_part(p)?;
             }
-            Rule::digits => {
+            Rule::uint => {
                 res += from_str::<u64>(&p).map(|n| Duration::from_nanos(n))?;
             }
             other => return Err(anyhow!("unexpected rule type {:?}", other)),

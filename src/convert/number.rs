@@ -1,16 +1,14 @@
 use anyhow::{anyhow, Result};
-use lexical_core::{parse_format, NumberFormat};
 
 use super::from_str;
-use crate::Pair;
+use crate::{parser::Rule, Pair};
 
 fn number(p: &Pair) -> Result<f64> {
-    from_str::<f64>(p)
+    from_str(p)
 }
 
 fn uint(p: &Pair) -> Result<u64> {
-    parse_format::<u64>(p.as_str().as_bytes(), NumberFormat::RUST_LITERAL)
-        .map_err(|e| anyhow!("convert to u64: {:?}", e.code))
+    from_str(p)
 }
 
 #[cfg(test)]
@@ -48,8 +46,8 @@ mod tests {
             ("1", 1u64),
             ("10", 10u64),
             ("101", 101u64),
-            ("100_000", 100_000u64),
-            ("1_000_000_0000", 1000_000_0000u64),
+            ("100000", 100_000u64),
+            ("1000000000", 1000_000_000u64),
         ];
 
         for c in cases {
