@@ -11,8 +11,17 @@ uint = { ASCII_DIGIT ~ (ASCII_DIGIT | "_")* }
 
 digits = { ASCII_DIGIT+ }
 
+string_literal = ${"\"" ~ (char_raw | char_escaped)* ~ "\""}
+char_raw = { !("\\" | "\"") ~ ANY }
+
+char_escaped = _{"\\" ~ ("x" ~ char_byte_inner | "u{" ~ char_unicode_inner ~ "}" | char_predefined_inner) }
+char_byte_inner = { ASCII_HEX_DIGIT{2} }
+char_unicode_inner = { ASCII_HEX_DIGIT{1, 6} }
+char_predefined_inner = { "n" | "r" | "t" | "\\" | "0" | "\"" | "'" }
+
+
 duration_unit = { "ns" | "us" | "ms" | "s" | "m" | "h" | "d" | "w" | "y" }
-duration_part = { digits ~ duration_unit }
-duration = { duration_part+ | digits }
+duration_part = ${ digits ~ duration_unit }
+duration = ${ duration_part+ | digits }
 
 input = {SOI ~ EOI}

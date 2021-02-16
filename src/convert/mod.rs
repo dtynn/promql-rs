@@ -4,6 +4,7 @@ use crate::Pair;
 
 mod duration;
 mod number;
+mod string_literal;
 
 fn from_str<O>(pair: &Pair) -> Result<O>
 where
