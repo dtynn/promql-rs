@@ -10,3 +10,7 @@ edition = "2018"
 anyhow = "1.0"
 pest = "2.0"
 pest_derive = "2.0"
+
+[dependencies.lexical-core]
+version = "0.7"
+features = ["format"]

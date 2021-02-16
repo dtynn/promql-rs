@@ -1,4 +1,16 @@
+add = { "+" }
+sub = { "-" }
+
+number = @{
+	("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
+	~ ("." ~ ASCII_DIGIT+)?
+	~ (^"e" ~ (add | sub)? ~ ASCII_DIGIT+)?
+}
+
+uint = { ASCII_DIGIT ~ (ASCII_DIGIT | "_")* }
+
 digits = { ASCII_DIGIT+ }
+
 duration_unit = { "ns" | "us" | "ms" | "s" | "m" | "h" | "d" | "w" | "y" }
 duration_part = { digits ~ duration_unit }
 duration = { duration_part+ | digits }

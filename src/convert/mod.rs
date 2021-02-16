@@ -3,8 +3,9 @@ use anyhow::{anyhow, Result};
 use crate::Pair;
 
 mod duration;
+mod number;
 
-fn convert_from_str<O>(pair: &Pair) -> Result<O>
+fn from_str<O>(pair: &Pair) -> Result<O>
 where
     O: std::str::FromStr,
     O::Err: std::fmt::Debug,

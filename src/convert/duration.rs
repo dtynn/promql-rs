@@ -2,11 +2,11 @@ use std::time::Duration;
 
 use anyhow::{anyhow, Result};
 
-use super::convert_from_str;
+use super::from_str;
 use crate::parser::*;
 use crate::Pair;
 
-fn convert_duration_unit(pair: &Pair) -> Result<Duration> {
+fn duration_unit(pair: &Pair) -> Result<Duration> {
     match pair.as_str() {
         "ns" => Ok(Duration::from_nanos(1)),
         "us" => Ok(Duration::from_micros(1)),
@@ -21,22 +21,22 @@ fn convert_duration_unit(pair: &Pair) -> Result<Duration> {
     }
 }
 
-fn convert_duration_part(pair: Pair) -> Result<Duration> {
+fn duration_part(pair: Pair) -> Result<Duration> {
     let subs: Vec<Pair> = pair.into_inner().collect();
-    let val = convert_from_str::<u32>(&subs[0])?;
-    let unit = convert_duration_unit(&subs[1])?;
+    let val = from_str::<u32>(&subs[0])?;
+    let unit = duration_unit(&subs[1])?;
     return Ok(unit * val);
 }
 
-fn convert_duration(pair: Pair) -> Result<Duration> {
+fn duration(pair: Pair) -> Result<Duration> {
     let mut res = Duration::from_secs(0);
     for p in pair.into_inner() {
         match p.as_rule() {
             Rule::duration_part => {
-                res += convert_duration_part(p)?;
+                res += duration_part(p)?;
             }
             Rule::digits => {
-                res += convert_from_str::<u64>(&p).map(|n| Duration::from_nanos(n))?;
+                res += from_str::<u64>(&p).map(|n| Duration::from_nanos(n))?;
             }
             other => return Err(anyhow!("unexpected rule type {:?}", other)),
         }
@@ -51,7 +51,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn convert_duration_test() {
+    fn duration_test() {
         let cases = vec![
             ("1", Duration::from_nanos(1)),
             ("1ns", Duration::from_nanos(1)),
@@ -88,7 +88,7 @@ mod tests {
                 .next()
                 .unwrap();
             assert_eq!(pair.as_rule(), parser::Rule::duration);
-            assert_eq!(convert_duration(pair).unwrap(), c.1);
+            assert_eq!(duration(pair).unwrap(), c.1, "input: {}", c.0);
         }
     }
 }
