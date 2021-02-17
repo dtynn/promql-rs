@@ -1,3 +1,4 @@
+// Common
 left_paren     = { "(" }
 right_paren    = { ")" }
 left_brace     = { "{" }
@@ -10,6 +11,13 @@ colon          = { ":" }
 semicolon      = { ";" }
 blank          = { "_" }
 times          = { "x" }
+
+eol            = _{ "\n" | "\r" }
+tab            = _{ "\t" }
+space          = _{ " " | tab | eol }
+alpha = _{ ASCII_ALPHA | "_" }
+alpha_numeric = _{ alpha | ASCII_DIGIT }
+line_comment = @{ "#" ~ ANY* ~ eol }
 
 sub            = { "-" }
 add            = { "+" }
@@ -26,6 +34,9 @@ eql_regex      = { "=~" }
 neq_regex      = { "!~" }
 pow            = { "^" }
 
+// Label
+label = { alpha ~ alpha_numeric* }
+identifier = { alpha_numeric }
 
 // Operators.
 and            = { "and" }
@@ -60,8 +71,12 @@ boolen         = { "bool" }
 start          = { "start" }
 end            = { "end" }
 
-// Literals
+// Keywords
+aggregate_op = { avg | bottomk | count | count_values | group | max | min | quantile | stddev | stdvar | sum | topk }
+unary_op = { add | sub }
+match_op = { eql | neq | eql_regex | neq_regex }
 
+// Literals
 number = @{
 	("0" | ASCII_NONZERO_DIGIT ~ ASCII_DIGIT*)
 	~ ("." ~ ASCII_DIGIT+)?
@@ -79,7 +94,7 @@ uint = { ASCII_DIGIT+ }
 string_literal = ${"\"" ~ (char_raw | char_escaped)* ~ "\""}
 char_raw = { !("\\" | "\"") ~ ANY }
 
-char_escaped = _{"\\" ~ ("x" ~ char_byte_inner | "u{" ~ char_unicode_inner ~ "}" | char_predefined_inner) }
+char_escaped = _{"\\" ~ (^"x" ~ char_byte_inner | "u{" ~ char_unicode_inner ~ "}" | char_predefined_inner) }
 char_byte_inner = { ASCII_HEX_DIGIT{2} }
 char_unicode_inner = { ASCII_HEX_DIGIT{1, 6} }
 char_predefined_inner = { "n" | "r" | "t" | "\\" | "0" | "\"" | "'" }
@@ -88,6 +103,93 @@ char_predefined_inner = { "n" | "r" | "t" | "\\" | "0" | "\"" | "'" }
 duration_unit = { "ns" | "us" | "ms" | "s" | "m" | "h" | "d" | "w" | "y" }
 duration_part = ${ uint ~ duration_unit }
 duration = ${ duration_part+ | uint }
+
+todo = { "TODO" }
+// Aggregations
+aggregate_expr = { todo }
+
+aggregate_modifier = { todo }
+
+// Binary Expression
+binary_expr = { todo }
+
+bin_modifier = { todo }
+
+bool_modifier = { todo }
+
+on_or_ignoring = { todo }
+
+group_modifiers = { todo }
+
+grouping_labels = { todo }
+
+grouping_label_list = { todo }
+
+grouping_label = { todo }
+
+// Function Calls
+function_call = { todo }
+
+function_call_body = { todo }
+
+function_call_args = { todo }
+
+
+// Expressions Inside Parentheses
+paren_expr = { todo }
+
+// Offset Modifiers
+offset_expr = { todo }
+
+// @Modifiers
+step_invariant_expr = { todo }
+
+at_modifier_preprocessors = { start | end }
+
+// Subquery and Range Selector
+matrix_selector = { todo }
+
+subquery_expr = { todo }
+
+// Unary Expressions
+unary_expr = { todo }
+
+// Vector Selectors
+vector_selector = { todo }
+
+label_matchers = { todo }
+
+label_match_list = { todo }
+
+label_matcher = { todo }
+
+// Metric Descriptions
+metric = { todo }
+
+metric_identifier = { todo }
+
+label_set = { todo }
+
+label_set_list = { todo }
+
+label_set_item = { todo }
+
+// Series Descriptions
+series_description = { todo }
+
+series_values = { todo }
+
+series_item = { todo }
+
+series_value = { todo }
+
+// Metric
+
+// Series Description
+
+// Expression
+
+// Metric Selector
 
 // Main
 input = {SOI ~ EOI}
