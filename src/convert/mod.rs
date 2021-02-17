@@ -3,6 +3,7 @@ use anyhow::{anyhow, Result};
 use crate::Pair;
 
 mod duration;
+mod metric;
 mod number;
 mod string_literal;
 
