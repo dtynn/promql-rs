@@ -5,6 +5,8 @@
 use lrlex::lrlex_mod;
 use lrpar::lrpar_mod;
 
+pub mod ast;
+
 lrlex_mod!("promql.l");
 lrpar_mod!("promql.y");
 
