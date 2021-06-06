@@ -1,0 +1,25 @@
+%start expr
+
+%left 'ADD' 'SUB'
+%left 'MUL' 'DIV'
+
+%%
+
+number: 'HEX'
+	  | 'OCT'
+	  | 'BIN'
+	  | 'FLOAT'
+	  ;
+
+expr: binary_expr
+	| number
+	| paren_expr
+	;
+
+binary_expr: expr 'ADD' expr
+		   | expr 'SUB' expr
+		   | expr 'MUL'expr
+		   | expr 'DIV'expr
+		   ;
+
+paren_expr: 'LPAREN' expr 'RPAREN';
